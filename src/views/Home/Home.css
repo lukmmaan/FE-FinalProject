@@ -1,0 +1,23 @@
+.imgCustom{
+    transition: all .5s;
+}
+.imgCustom:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+.judul{
+    text-align: center;
+    margin: 80px;
+    border-bottom: 1px grey solid;
+    padding-bottom: 10px;
+}
+
+.judul:hover{
+    background: none;
+    color: grey;
+    font-family: 'Creepster', cursive;
+}
+
+.teks{
+    font-family: Geogrotesque-SmBd,"Franklin Gothic Medium",Geneva,Tahoma,Verdana sans-serif;
+}

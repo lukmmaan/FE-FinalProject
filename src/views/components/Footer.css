@@ -1,0 +1,18 @@
+.teks,p{
+    font-family: Geogrotesque-SmBd,"Franklin Gothic Medium",Geneva,Tahoma,Verdana sans-serif;
+}
+.listCustom{
+    list-style: none;
+}
+p{
+    color: grey
+}
+.formCari{
+    border:1px solid black;
+    border-radius: 0px;
+    width: 250px;
+    padding: 11px
+}
+.btnCustom{
+    border-radius: 0px
+}
