@@ -32,6 +32,9 @@ class Home extends React.Component {
     render() {
         return (
             <div>
+                <div style={{ height: "400px" }} className="bgImage3">
+
+                </div>
                 <h1 className='judul'>DISCOVER</h1>
                 <div style={{ marginTop: "30px",height:"1000px" }} className="d-flex flex-column">
                     <div style={{ height: "500px" }} className="row">

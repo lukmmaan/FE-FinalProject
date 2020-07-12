@@ -1,0 +1,10 @@
+.bgImage6{
+    background-image: url("https://www.osprey.com/images/heros/snow_header-lg.jpg") ;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.textHover:hover{
+    cursor: pointer;
+    color: black;
+}

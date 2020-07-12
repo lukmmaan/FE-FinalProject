@@ -4,3 +4,19 @@
     /* box-shadow: 0px 4px 8px rgba(92, 107, 192, 0.2),
     0px 2px 4px rgba(59, 69, 123, 0.2); */
 }
+
+.textAja:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.textAja{
+    color: white;
+    font-size: 30px;
+}
+
+.bgImage{
+    background-image: url("https://www.osprey.com/images/heros/20_HP_Carousel_Update_June4Category_Hike.jpg") ;
+    background-size: cover;
+    background-attachment: scroll;
+}

@@ -49,7 +49,7 @@ class Navbar extends React.Component {
                                                         <Link to="/members">
                                                             <DropdownItem>Members</DropdownItem>
                                                         </Link>
-                                                        <Link to="/payments">
+                                                        <Link to="/adminPayment">
                                                             <DropdownItem>Payments</DropdownItem>
                                                         </Link>
                                                         <Link to="/report">
@@ -62,8 +62,8 @@ class Navbar extends React.Component {
                                                             <Link to="/editProfile">
                                                                 <DropdownItem>Edit Profile</DropdownItem>
                                                             </Link>
-                                                            <Link to="/">
-                                                                <DropdownItem>Wishlist</DropdownItem>
+                                                            <Link to="/statusbelanja">
+                                                                <DropdownItem>Shop Status</DropdownItem>
                                                             </Link>
                                                         </>
                                                     )
@@ -118,7 +118,7 @@ class Navbar extends React.Component {
                         </ul>
                     </div>
                     <div>
-                        <input type="text" className="form-control navbar-search-input" placeholder="Search Osprey..." />
+                        <h4></h4>
                     </div>
                 </div>
             </>

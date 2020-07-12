@@ -1,0 +1,16 @@
+.bgImage5{
+    background-image: url("https://www.osprey.com/stories/wp-content/uploads/2020/05/DSC04399-1200x800.jpg") ;
+    background-size: cover;
+    background-attachment: scroll;
+}
+.transisi{
+    transition: all .5s;
+}
+.bgImage5:hover{
+    opacity: 0.9;  
+}
+
+.hoverText:hover{
+    color: rgb(194, 165, 87);
+    cursor: pointer;
+}

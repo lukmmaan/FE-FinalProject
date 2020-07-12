@@ -16,7 +16,7 @@ class ProductDetails extends React.Component {
     getProductDetail = () => {
         Axios.get(`${API_URL}/products/${this.props.match.params.id}`)
             .then((res) => {
-                // console.log(res.data)
+                console.log(res.data)
                 this.setState({
                     arrProduct: res.data
                 })
@@ -32,6 +32,12 @@ class ProductDetails extends React.Component {
     addToCartHandler = () => {
         if (this.props.user.id < 1) {
             swal("Gagal", "Login Terlebih Dahulu untuk menambah ke keranjang", "error")
+        }
+        else if (this.state.arrProduct.stock <=0) {
+            swal("Gagal","Product Ini Habis","success")
+        }
+        else if(this.props.user.role =="admin"){
+            swal("Gagal", "Admin Ga boleh Belanja","error")
         }
         else {
             Axios.get(`${API_URL}/carts/product/${this.props.user.id}/${this.props.match.params.id}`)

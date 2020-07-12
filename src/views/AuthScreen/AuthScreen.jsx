@@ -5,6 +5,7 @@ import { loginHandler } from "../../redux/actions"
 import { connect } from "react-redux"
 import Cookies from "universal-cookie";
 import { Redirect, Route, Link } from "react-router-dom";
+import "./AuthScreen.css"
 const API_URL = `http://localhost:8080/`;
 class AuthScreen extends React.Component {
     state = {
@@ -56,7 +57,7 @@ class AuthScreen extends React.Component {
             })
             .catch((err) => {
                 // console.log(err.response.data.message)
-                swal("Failed", err.response.data.message,"error")
+                swal("Failed", err.response.data.message, "error")
             })
     }
 
@@ -76,14 +77,14 @@ class AuthScreen extends React.Component {
     lupaPasswordHandler = () => {
         // swal("Sukses!", `${this.state.usernameLupaPassword}`, "success");
         Axios.get(`${API_URL}/users/forgetPass/${this.state.usernameLupaPassword}`)
-        .then((res)=>{
-            console.log(res.data)
-            swal("Sukses!", `Check Your Email To Change the password`, "success");
-        })
-        .catch((err)=>{
-            // console.log(err.response.data)
-            swal("Failed",err.response.data.message,"error")
-        })
+            .then((res) => {
+                console.log(res.data)
+                swal("Sukses!", `Check Your Email To Change the password`, "success");
+            })
+            .catch((err) => {
+                // console.log(err.response.data)
+                swal("Failed", err.response.data.message, "error")
+            })
     }
     renderAuthScreen = () => {
         const { activePage, registerForm, loginForm } = this.state
@@ -92,9 +93,9 @@ class AuthScreen extends React.Component {
             return (
                 <div>
                     <div className="row">
-                        <h3 style={{ textDecoration: "line-through", color: "grey" }} onClick={() => this.setState({ activePage: "register" })} className="App col-4">Register</h3>
+                        <h3  style={{ textDecoration: "line-through", color: "grey" }} onClick={() => this.setState({ activePage: "register" })} className="App col-4 hoverText">Register</h3>
                         <h3 className="col-4 App" style={{ color: "grey" }}>|</h3>
-                        <h3 onClick={() => this.setState({ activePage: "Login" })} className="App col-4">Login</h3>
+                        <h3 onClick={() => this.setState({ activePage: "Login" })} className="App col-4 hoverText">Login</h3>
                     </div>
                     <hr />
                     <input onChange={(e) => this.inputHandler(e, "fullName", "registerForm")} value={fullName} className="form-control mb-3" type="text" placeholder="Full Name" />
@@ -104,8 +105,8 @@ class AuthScreen extends React.Component {
                     <input onChange={(e) => this.inputHandler(e, "noHp", "registerForm")} value={noHP} className="form-control mb-3" type="text" placeholder="Phone Number" />
                     <input onChange={(e) => this.inputHandler(e, "alamat", "registerForm")} value={alamat} className="form-control mb-3" type="text" placeholder="Alamat" />
                     <div className="d-flex flex-row">
-                    <input type="checkbox" onChange={(e) => this.checkBoxHandler(e, "registerForm")} style={{ marginRight: "10px" }} />
-                    <p>Show Password</p>
+                        <input type="checkbox" onChange={(e) => this.checkBoxHandler(e, "registerForm")} style={{ marginRight: "10px" }} />
+                        <p>Show Password</p>
                     </div>
                     <input onClick={this.registerHandler} className="btn btn-primary" type="button" value="Register" />
                 </div>
@@ -115,28 +116,29 @@ class AuthScreen extends React.Component {
             return (
                 <div>
                     <div className="row">
-                        <h3 onClick={() => this.setState({ activePage: "register" })} className="App col-4">Register</h3>
+                        <h3 onClick={() => this.setState({ activePage: "register" })} className="App col-4 hoverText">Register</h3>
                         <h3 className="col-4 App" style={{ color: "grey" }}>|</h3>
-                        <h3 style={{ textDecoration: "line-through", color: "grey" }} onClick={() => this.setState({ activePage: "Login" })} className="App col-4">Login</h3>
+                        <h3 style={{ textDecoration: "line-through", color: "grey" }} onClick={() => this.setState({ activePage: "Login" })} className="App col-4 hoverText">Login</h3>
                     </div>
                     <hr />
                     <input onChange={(e) => this.inputHandler(e, "username", "loginForm")} value={loginForm.username} className="form-control mb-3" type="text" placeholder="Username" />
                     <input onChange={(e) => this.inputHandler(e, "password", "loginForm")} value={loginForm.password} className="form-control mb-3" type="text" type={this.state.loginForm.showPassword ? "text" : "password"} placeholder="Password" />
                     <div className="d-flex flex-row">
-                    <input type="checkbox" onChange={(e) => this.checkBoxHandler(e, "loginForm")} style={{ marginRight: "10px" }} />
-                    <p>Show Password</p>
+                        <input type="checkbox" onChange={(e) => this.checkBoxHandler(e, "loginForm")} style={{ marginRight: "10px" }} />
+                        <p>Show Password</p>
                     </div>
                     <div className="d-flex flex-row">
-                    <input onClick={this.loginHandler} className="btn btn-primary" type="button" value="Login" />
-                    <input style={{ marginLeft: "30px" }} onClick={() => { this.setState({ kondisiLupaPassword: true }) }} className="btn btn-danger" type="button" value="Lupa Password" />
+                        <input onClick={this.loginHandler} className="btn btn-primary" type="button" value="Login" />
+                        <input style={{ marginLeft: "30px" }} onClick={() => { this.setState({ kondisiLupaPassword: true }) }} className="btn btn-danger" type="button" value="Lupa Password" />
                     </div>
                     {
                         (!this.state.kondisiLupaPassword) ? null : (
-                            <div>
+                            <div className="mt-5">
                                 <input onChange={
                                     (e) => this.setState({ usernameLupaPassword: e.target.value })
                                 } value={this.state.usernameLupaPassword} className="form-control mb-3" type="text" placeholder="Username" />
-                                <input onClick={this.lupaPasswordHandler} className="btn btn-warning" type="button" value="Recovered Password" />
+                                <input onClick={this.lupaPasswordHandler} className="btn btn-warning mr-3" type="button" value="Recovered Password" />
+                                <input onClick={()=>this.setState({kondisiLupaPassword: false})} type="button" value="Cancel" className="btn btn-secondary"/>
                             </div>
                         )
                     }
@@ -157,14 +159,20 @@ class AuthScreen extends React.Component {
         else {
             return (
                 <div>
-                    <hr />
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                        <div className="ml-5 p-4"
-                            style={{ height: "520px", width: "400px", }}
-                        >
-                            {this.renderAuthScreen()}
+                    <hr/>
+                <div className="row">
+                    <div className="col-8 bgImage5 transisi">
+                    </div>
+                    <div className="col-4 transisi">
+                        <div style={{marginLeft:"0px", display: "flex", justifyContent: "center"}}>
+                            <div className=" p-4"
+                                style={{ height: "520px", width: "400px", }}
+                            >
+                                {this.renderAuthScreen()}
+                            </div>
                         </div>
                     </div>
+                </div>
                 </div>
             )
         }

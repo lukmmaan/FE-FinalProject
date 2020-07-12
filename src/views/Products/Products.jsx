@@ -20,19 +20,19 @@ class Products extends React.Component {
         orderBy: "productName",
         urutan: "asc",
         banyakProduct: 0,
-        arrPakets :[]
+        arrPakets: []
     }
-    getPaket = () =>{
+    getPaket = () => {
         Axios.get(`${API_URL}/paket`)
-        .then((res)=>{
-            console.log(res.data)
-            this.setState({
-                arrPakets: res.data
+            .then((res) => {
+                console.log(res.data)
+                this.setState({
+                    arrPakets: res.data
+                })
             })
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
+            .catch((err) => {
+                console.log(err)
+            })
     }
     getProducts = () => {
         Axios.get(`${API_URL}/products`)
@@ -49,7 +49,7 @@ class Products extends React.Component {
 
     getCountProduct = () => {
         console.log(this.state.categoryNameFilter)
-        if (this.state.categoryNameFilter =="All") {
+        if (this.state.categoryNameFilter == "All") {
             Axios.get(`${API_URL}/products/count/all/${this.state.minPrice}/${this.state.maxPrice}/?productName=${this.state.searchProductAll}`)
                 .then((res) => {
                     this.setState({
@@ -61,18 +61,18 @@ class Products extends React.Component {
                     console.log(err)
                 })
         }
-        else{
+        else {
             Axios.get(`${API_URL}/products/count/${this.state.minPrice}/${this.state.maxPrice}/?productName=${this.state.searchProductAll}&categoryName=${this.state.categoryNameFilter}`)
-            .then((res) => {
-                this.setState({
-                    banyakProduct: res.data
+                .then((res) => {
+                    this.setState({
+                        banyakProduct: res.data
+                    })
+                    console.log(res.data)
+                    // console.log(this.state.banyakProduct)
                 })
-                console.log(res.data)
-                // console.log(this.state.banyakProduct)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+                .catch((err) => {
+                    console.log(err)
+                })
         }
     }
     getProductsByPrice = (val) => {
@@ -138,8 +138,8 @@ class Products extends React.Component {
             return <option value={val.categoryName}>{val.categoryName}</option>
         })
     }
-    renderPaket = () =>{
-        return this.state.arrPakets.map((val)=>{
+    renderPaket = () => {
+        return this.state.arrPakets.map((val) => {
             return <PaketCard data={val} className="m-2 col-3"></PaketCard>
         })
     }
@@ -156,7 +156,7 @@ class Products extends React.Component {
         console.log(arr)
         return arr
     }
-    onClickHalaman = (i) =>{
+    onClickHalaman = (i) => {
 
         // this.setState({
         //     kondisiHalaman:i
@@ -165,17 +165,17 @@ class Products extends React.Component {
         this.kondisiHalaman = i
         // console.log(this.kondisiHalaman)
         this.getProductsByPrice(this.state.categoryNameFilter)
-        this.kondisiHalaman =i
+        this.kondisiHalaman = i
     }
     kondisiPageHandler = () => {
         if (this.state.kondisiPage == 1) {
             return (
                 <>
-                    <center>
+                    <center className="mt-5">
                         <h1>ALL PRODUCTS</h1>
                         <div className="d-flex flex-row w-100">
                             <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ minPrice: +e.target.value })} className="form-control ml-4 mr-4" type="text" placeholder="Min Price" />
-                            <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ maxPrice: 1 *e.target.value })} className="form-control mr-4" type="text" placeholder="Max Price" />
+                            <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ maxPrice: 1 * e.target.value })} className="form-control mr-4" type="text" placeholder="Max Price" />
                             <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} className="form-control mr-4" onChange={(e) => this.setState({ searchProductAll: e.target.value })} type="text" placeholder="Product Name" />
                             <select onClick={() => this.getProductsByPrice(this.state.categoryNameFilter)} className="form-control w-40" onChange={(e) => this.setState({ categoryNameFilter: e.target.value })} name="category" id="category" style={{ marginRight: "30px", width: "500px" }}>
                                 <option value="All">All</option>
@@ -189,7 +189,7 @@ class Products extends React.Component {
                                 <option value="productName">Product Name</option>
                                 <option value="price">Price</option>
                                 {
-                                    (this.props.user.role =="admin")?(<option value="sold">Sold</option>):null
+                                    (this.props.user.role == "admin") ? (<option value="sold">Sold</option>) : null
                                 }
                             </select> <h3 className="ml-3"> -</h3>
                             <select onClick={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ urutan: e.target.value })} className="form-control ml-4" style={{ width: "100px" }} name="urutan">
@@ -201,7 +201,7 @@ class Products extends React.Component {
                     <br />
                     <center>
                         <div >
-                            <div style={{justifyContent:"center" }} className="row">
+                            <div style={{ justifyContent: "center" }} className="row">
                                 {this.renderProductCard()}
                             </div>
                             <div className="mt-5 mb-5">
@@ -214,30 +214,64 @@ class Products extends React.Component {
         }
         else if (this.state.kondisiPage == 4) {
             return (
-                <div className="mb-5">
-                <h1 className="App">ALL PACKAGE</h1>
-                <div className="row" style={{justifyContent:"center"}}>
-                    {this.renderPaket()}
-                </div>
+                <div className="mb-5 mt-5">
+                    <h1 className="App">ALL PACKAGE</h1>
+                    <div className="row" style={{ justifyContent: "center" }}>
+                        {this.renderPaket()}
+                    </div>
                 </div>
             )
         }
     }
 
+    renderPage = () => {
+        if (this.state.kondisiPage == 1) {
+            return (
+                <>
+                    <div className="textAja col-6" style={{marginTop:"200px", textDecoration: "line-through" }} onClick={() => this.setState({ kondisiPage: 1 })}>
+                        <h2>All Products</h2>
+                    </div>
+                    <div className="col-6 textAja" style={{marginTop:"200px"}} onClick={() => this.setState({ kondisiPage: 4 })}>
+                        <h2>Package</h2>
+                    </div>
+                </>
+            )
+        }
+        else if (this.state.kondisiPage == 4) {
+            return (
+                <>
+                    <div className="textAja col-6" style={{marginTop:"200px"}} onClick={() => this.setState({ kondisiPage: 1 })}>
+                        <h2>All Products</h2>
+                    </div>
+                    <div className="col-6 textAja" style={{ textDecoration: "line-through",marginTop:"200px" }} onClick={() => this.setState({ kondisiPage: 4 })}>
+                        <h2>Package</h2>
+                    </div>
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                    <div className="textAja col-6" style={{marginTop:"200px"}} onClick={() => this.setState({ kondisiPage: 1 })}>
+                        <h2>All Products</h2>
+                    </div>
+                    <div className="col-6 textAja" style={{marginTop:"200px"}} onClick={() => this.setState({ kondisiPage: 4 })}>
+                        <h2>Package</h2>
+                    </div>
+                </>
+            )
+
+        }
+    }
     render() {
         return (
             <div>
-                <hr />
-                <div className="App d-flex flex-column" style={{ justifyContent: "center", marginBottom: "40px" }}>
-                    <table className="table">
-                        <thead>
-                            <td onClick={() => this.setState({ kondisiPage: 1 })}>All Products<br /></td>
-                            <td onClick={() => this.setState({ kondisiPage: 4 })}>Package</td>
-                        </thead>
-                        <tr></tr>
-                    </table>
+                {/* <hr /> */}
+                <div className="bgImage" style={{ height: "400px" }}>
+                    <div className="App row" style={{ justifyContent: "center" }}>
+                        {this.renderPage()}
+                    </div>
                 </div>
-                <hr />
                 {this.kondisiPageHandler()}
             </div>
         )

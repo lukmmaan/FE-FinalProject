@@ -43,6 +43,12 @@ class PaketDetails extends React.Component {
         if (this.props.user.id <1) {
             swal("Gagal","Login Terlebih Dahulu untuk menambah ke keranjang","error")
         }
+        else if (this.state.arrPaket.stockPaket <=0) {
+            swal("Gagal","Product Ini Habis","success")
+        }
+        else if(this.props.user.role =="admin"){
+            swal("Gagal", "Admin Ga boleh Belanja","error")
+        }
         else{
             Axios.get(`${API_URL}/carts/paket/${this.props.user.id}/${this.props.match.params.id}`)
             .then((res)=>{

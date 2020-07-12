@@ -21,3 +21,8 @@
 .teks{
     font-family: Geogrotesque-SmBd,"Franklin Gothic Medium",Geneva,Tahoma,Verdana sans-serif;
 }
+.bgImage3{
+    background-image: url("https://www.osprey.com/images/heros/F19_Category_1920x500_LS.jpg") ;
+    background-size: cover;
+    background-attachment: scroll;
+}

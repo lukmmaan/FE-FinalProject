@@ -178,6 +178,7 @@ class AdminProducts extends React.Component {
                 this.getProducts()
             })
             .catch((err) => {
+                swal("Error",err.response.data.message,"error")
                 console.log(err)
             })
     }
@@ -259,7 +260,7 @@ class AdminProducts extends React.Component {
                     <td>{val.hargaPaket}</td>
                     <td>
                         <div>
-                            <input onClick={() => this.editPaketHandler(val.id, idx)} className="btn btn-warning mr-3" type="button" value="Edit" />
+                            <input onClick={() => this.editPaketHandler(val.id, idx,val)} className="btn btn-warning mr-3" type="button" value="Edit" />
                             <input onClick={() => this.deletePaketHandler(val.id)} className="btn btn-danger" type="button" value="Delete" />
                         </div>
                     </td>
@@ -335,19 +336,21 @@ class AdminProducts extends React.Component {
         console.log(id)
         console.log(this.state.oldCategoryName)
     }
-    editProductsHandler = (id, idx) => {
+    editProductsHandler = (id, idx,val) => {
         console.log(id)
         this.setState({
             kondisiEditProduct: id,
-            oldProductName: this.state.getProductsName[idx].productName
+            oldProductName: this.state.getProductsName[idx].productName,
+            newProduct:val
         })
         console.log(this.state.oldProductName)
     }
-    editPaketHandler = (id, idx) => {
+    editPaketHandler = (id, idx,val) => {
         console.log(id)
         this.setState({
             kondisiEditPaket: id,
-            oldPaketName: this.state.getPaket[idx].namaPaket
+            oldPaketName: this.state.getPaket[idx].namaPaket,
+            editPaket:val
         })
         console.log(this.state.oldPaketName)
     }
@@ -439,7 +442,7 @@ class AdminProducts extends React.Component {
                         )
                     })}</td>
                     <td>
-                        <input onClick={() => this.editProductsHandler(val.id, idx)} className="btn btn-warning mr-4" type="button" value="Edit" />
+                        <input onClick={() => this.editProductsHandler(val.id, idx, val)} className="btn btn-warning mr-4" type="button" value="Edit" />
                         <input onClick={() => this.deleteProductHandler(val.id)} className="btn btn-danger" type="button" value="Delete" />
                     </td>
                 </tr>
@@ -554,16 +557,16 @@ class AdminProducts extends React.Component {
                             <h2>Edit Product {this.state.oldProductName} Form</h2>
                             <table className="table mt-5">
                                 <tr>
-                                    <td><input onChange={(e) => this.inputHandler(e, "productName", "newProduct")} className="form-control" type="text" placeholder="Product Name" /></td>
-                                    <td><input onChange={(e) => this.inputHandler(e, "price", "newProduct")} className="form-control" type="text" placeholder="Price" /></td>
+                                    <td><input value={this.state.newProduct.productName} onChange={(e) => this.inputHandler(e, "productName", "newProduct")} className="form-control" type="text" placeholder="Product Name" /></td>
+                                    <td><input value={this.state.newProduct.price} onChange={(e) => this.inputHandler(e, "price", "newProduct")} className="form-control" type="text" placeholder="Price" /></td>
                                 </tr>
                                 <tr>
-                                    <td><input onChange={(e) => this.inputHandler(e, "size", "newProduct")} className="form-control" type="text" placeholder="Size" /></td>
-                                    <td><input onChange={(e) => this.inputHandler(e, "description", "newProduct")} className="form-control" type="text" placeholder="Description" /></td>
+                                    <td><input value={this.state.newProduct.size} onChange={(e) => this.inputHandler(e, "size", "newProduct")} className="form-control" type="text" placeholder="Size" /></td>
+                                    <td><input value={this.state.newProduct.description} onChange={(e) => this.inputHandler(e, "description", "newProduct")} className="form-control" type="text" placeholder="Description" /></td>
                                 </tr>
                                 <tr>
-                                    <td><input onChange={(e) => this.inputHandler(e, "stock", "newProduct")} className="form-control" type="text" placeholder="Stock" /></td>
-                                    <td><input onChange={(e) => this.inputHandler(e, "image", "newProduct")} className="form-control" type="text" placeholder="Image" /></td>
+                                    <td><input value={this.state.newProduct.stock} onChange={(e) => this.inputHandler(e, "stock", "newProduct")} className="form-control" type="text" placeholder="Stock" /></td>
+                                    <td><input value={this.state.newProduct.image} onChange={(e) => this.inputHandler(e, "image", "newProduct")} className="form-control" type="text" placeholder="Image" /></td>
                                 </tr>
                             </table>
                             <input onClick={this.saveEditProduct} className="form-control" className="btn btn-primary" type="button" value="Save" />
@@ -627,8 +630,8 @@ class AdminProducts extends React.Component {
                         <div>
                             <div className="d-flex flex-column container" >
                                 <h4 style={{ marginRight: "15px" }}>Edit {this.state.oldPaketName} :</h4>
-                                <input onChange={(e) => this.inputHandler(e, "namaPaket", "editPaket")} placeholder="Nama Paket" className="form-control mt-3" type="text" />
-                                <input onChange={(e) => this.inputHandler(e, "imagePaket", "editPaket")} placeholder="Image Paket" className="form-control mt-3" type="text" />
+                                <input value={this.state.editPaket.namaPaket} onChange={(e) => this.inputHandler(e, "namaPaket", "editPaket")} placeholder="Nama Paket" className="form-control mt-3" type="text" />
+                                <input value={this.state.editPaket.imagePaket} onChange={(e) => this.inputHandler(e, "imagePaket", "editPaket")} placeholder="Image Paket" className="form-control mt-3" type="text" />
                                 <center>
                                     <input onClick={this.saveEditPaket} className="btn btn-warning mt-3 mr-3" style={{ width: "60px" }} type="button" value="Save" />
                                     <input onClick={() => this.setState({ kondisiEditPaket: 0 })} type="button" value="Cancel" className="btn btn-danger mt-3" style={{ width: "70px" }} />
