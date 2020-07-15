@@ -3,7 +3,7 @@ import Axios from "axios";
 import "./ProductDetails.css"
 import { connect } from "react-redux"
 import swal from "sweetalert";
-import {qtyCart} from "../../redux/actions/"
+import { qtyCart } from "../../redux/actions/"
 const API_URL = `http://localhost:8080/`;
 class ProductDetails extends React.Component {
 
@@ -30,25 +30,31 @@ class ProductDetails extends React.Component {
     }
 
     addToCartHandler = () => {
-        if (this.props.user.id < 1) {
+
+        if (this.props.user.id == 0) {
             swal("Gagal", "Login Terlebih Dahulu untuk menambah ke keranjang", "error")
         }
-        else if (this.state.arrProduct.stock <=0) {
-            swal("Gagal","Product Ini Habis","success")
+        // else if (!this.props.user.isVerified) {
+        //     console.log(this.props.user)
+        //     swal("Gagal",`Verify Akun terlebih dahulu untuk memasukkan ke keranjang`,"error")
+        // }
+        else if (this.state.arrProduct.stock <= 0) {
+            swal("Gagal", "Product Ini Habis", "success")
         }
-        else if(this.props.user.role =="admin"){
-            swal("Gagal", "Admin Ga boleh Belanja","error")
+        else if (this.props.user.role == "admin") {
+            swal("Gagal", "Admin Ga boleh Belanja", "error")
         }
         else {
+            console.log(this.props.user)
             Axios.get(`${API_URL}/carts/product/${this.props.user.id}/${this.props.match.params.id}`)
                 .then((res) => {
-                    console.log(res.data)
+                    // console.log(res.data)
                     if (res.data.length == 0) {
                         Axios.post(`${API_URL}/carts/${this.props.user.id}/${this.props.match.params.id}/0`,
                             { quantity: 1 })
                             .then((res) => {
                                 swal("Berhasil", "Anda Berhasil membeli item ini untuk pertama kali", "success")
-                                console.log(res.data)
+                                // console.log(res.data)
                                 this.props.qtyCart(this.props.user.id)
                             })
                             .catch((err) => {
@@ -77,35 +83,39 @@ class ProductDetails extends React.Component {
         return (
             <div>
                 <hr />
-                <div className="row imgCustom" style={{ height: "500px", margin: "40px", border: "1px solid grey", borderRadius: "16px" }}>
-                    <div className="col-6">
-                        <div className="App" style={{ margin: "60px", height: "350px" }}>
-                            <img src={this.state.arrProduct.image} height="90%%" />
+                <div className="d-flex" style={{ flex: 1, justifyContent: "center" }}>
+                    <div className="row bgKucing" style={{ width: "750px", margin: "40px" }}>
+                        <div className="col-5">
+                            <div className="App" style={{ marginTop: "100px", marginLeft: "100px" }}>
+                                <img src={this.state.arrProduct.image} width="200px" />
+                            </div>
                         </div>
-                    </div>
-                    <div className="col-6 d-flex flex-column" style={{ paddingLeft: "40px" }} >
-                        <div>
-                            <h1 className="App mt-5">
-                                {this.state.arrProduct.productName}
-                            </h1>
-                        </div>
-                        <div>
-                            <h5 className="mt-5 mb-5">{this.state.arrProduct.description}</h5>
-                        </div>
-                        <div>
-                            <h2 className="mt-5">Price : Rp.{this.state.arrProduct.price}</h2>
-                        </div>
-                        <div>
-                            <h5 className="mt-2">Size : {this.state.arrProduct.size}</h5>
-                        </div>
-                        <div>
-                            <h5>Stock : {this.state.arrProduct.stock}</h5>
-                        </div>
-                        <div>
-                            <h5>Sold : {this.state.arrProduct.sold}</h5>
-                        </div>
-                        <div>
-                            <input onClick={this.addToCartHandler} className="btn btn-primary" type="button" value="Add to Cart" />
+                        <div className="col-7 d-flex flex-column" style={{ paddingLeft: "40px",height:"460px" }} >
+                            <div>
+                                <h5 className="App mt-5">
+                                    {this.state.arrProduct.productName}
+                                </h5>
+                            </div>
+                            <div>
+                                <h6 style={{ textAlign: "justify", marginRight: "70px" }} className="mt-2">{this.state.arrProduct.description},Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero sequi, optio necessitatibus quos incidunt, consectetur reprehenderit, vel quasi dicta omnis enim ad. Unde ea culpa eius maiores laudantium vel hic!</h6>
+                            </div>
+                            <div>
+                                <h6 className="mt-2" style={{ color: "red" }}>Price : Rp.{this.state.arrProduct.price}</h6>
+                            </div>
+                            <div>
+                                <p className="mt-1">Size : {this.state.arrProduct.size}</p>
+                            </div>
+                            <div>
+                                <p>Stock : {this.state.arrProduct.stock}</p>
+                            </div>
+                            <div>
+                                <p>Sold : {this.state.arrProduct.sold}</p>
+                            </div>
+                            <div>
+                                <center>
+                                    <input onClick={this.addToCartHandler} className="btn btn-primary" type="button" value="Add to Cart" />
+                                </center>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,4 +132,4 @@ const mapStateToProps = (state) => {
 const mapDispatchtoProps = {
     qtyCart
 }
-export default connect(mapStateToProps,mapDispatchtoProps)(ProductDetails)
+export default connect(mapStateToProps, mapDispatchtoProps)(ProductDetails)

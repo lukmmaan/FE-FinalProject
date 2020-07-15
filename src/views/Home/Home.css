@@ -26,3 +26,24 @@
     background-size: cover;
     background-attachment: scroll;
 }
+.carousel-item-home-bg {
+    background: rgb(7, 15, 32);
+    background: linear-gradient(
+      90deg,
+      rgb(0, 0, 0) 20%,
+      rgb(255, 255, 255) 55%,
+      rgb(255, 255, 255) 69%
+    );
+  }
+  
+  .carousel-item-home {
+    width: 100vw;
+    height: 440px;
+  }
+
+  .btnKostum:hover{
+      color: red;
+      background-color: black;
+      border: 1px red solid;
+      animation: all 1s;
+  }

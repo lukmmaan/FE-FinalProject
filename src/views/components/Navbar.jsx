@@ -9,7 +9,8 @@ import { logoutHandler } from "../../redux/actions"
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
 class Navbar extends React.Component {
     state = {
-        dropdownOpen: false
+        dropdownOpen: false,
+        stateLogout:0
     }
     toggleDropdown = () => {
         this.setState({
@@ -41,18 +42,15 @@ class Navbar extends React.Component {
                                             {
                                                 this.props.user.role == "admin" ? (
                                                     <>
-                                                        <DropdownItem>
-                                                            <Link to="/adminproducts">
+                                                        <Link to="/adminproducts">
+                                                            <DropdownItem>
                                                                 Products
-                                                            </Link>
-                                                        </DropdownItem>
-                                                        <Link to="/members">
-                                                            <DropdownItem>Members</DropdownItem>
+                                                            </DropdownItem>
                                                         </Link>
                                                         <Link to="/adminPayment">
                                                             <DropdownItem>Payments</DropdownItem>
                                                         </Link>
-                                                        <Link to="/report">
+                                                        <Link to="/adminreport">
                                                             <DropdownItem>Report</DropdownItem>
                                                         </Link>
                                                     </>
@@ -80,17 +78,21 @@ class Navbar extends React.Component {
                                         </DropdownMenu>
                                     </Dropdown>
                                 </div>
-                                <div >
-                                    <Link to={`/carts/${this.props.user.id}`} className="d-flex flex-row" style={{ padding: "0px", color: "gold" }}>
-                                        <FontAwesomeIcon
-                                            className="mr-2"
-                                            icon={faShoppingCart}
-                                            style={{ fontSize: 24 }}
+                                {
+                                    (this.props.user.role == "user") ? (
+                                        <div >
+                                            <Link to={`/carts/${this.props.user.id}`} className="d-flex flex-row" style={{ padding: "0px", color: "gold" }}>
+                                                <FontAwesomeIcon
+                                                    className="mr-2"
+                                                    icon={faShoppingCart}
+                                                    style={{ fontSize: 24 }}
 
-                                        />
-                                        <p style={{ fontSize: 16, margin: "0px" }}>{this.props.user.itemCart}</p>
-                                    </Link>
-                                </div>
+                                                />
+                                                <p style={{ fontSize: 16, margin: "0px" }}>{this.props.user.itemCart}</p>
+                                            </Link>
+                                        </div>
+                                    ) : null
+                                }
                             </div>
 
                         // (<a className="teksHitam" href="#">{this.props.user.username}</a>)

@@ -18,7 +18,7 @@ const init_state = {
 export default (state = init_state, action) => {
     switch (action.type) {
         case ON_LOGIN_SUCCESS:
-            const { username, fullName, role, id,alamat,email,noHp,isVerified } = action.payload;
+            const { username, fullName, role, id,alamat,email,noHp,verified } = action.payload;
             return {
                 ...state,
                 id,
@@ -28,7 +28,7 @@ export default (state = init_state, action) => {
                 role,
                 email,
                 noHp,
-                isVerified,
+                isVerified: verified,
                 cookieChecked: true,
             };
         case ON_LOGIN_FAIL:
@@ -41,18 +41,18 @@ export default (state = init_state, action) => {
             return {...state,itemCart: action.payload}
         case "COOKIE_CHECK":
             return { ...state, cookieChecked: true };
-        case ON_CHANGE_PROFILE:
-            // const { username, fullName, role, id,alamat,email,noHp,isVerified } = action.payload;
-            return {
-                ...state,
-                id,
-                alamat,
-                email,
-                fullName,
-                noHp,
-                username,
-                cookieChecked:true
-            }
+        // case ON_CHANGE_PROFILE:
+        //     // const { username, fullName, role, id,alamat,email,noHp,isVerified } = action.payload;
+        //     return {
+        //         ...state,
+        //         id,
+        //         alamat,
+        //         email,
+        //         fullName,
+        //         noHp,
+        //         username,
+        //         cookieChecked:true
+        //     }
         default:
             return { ...state };
     }

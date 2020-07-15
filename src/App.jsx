@@ -21,6 +21,7 @@ import Cart from './views/Cart/Cart';
 import PageNotFound from './views/components/PageNotFound';
 import StatusBelanja from './views/Status Belanja User/StatusBelanja';
 import AdminPayment from './views/Admin/AdminPayment';
+import AdminReport from './views/Admin/AdminReport';
 const cookieObj = new Cookie();
 
 class App extends React.Component {
@@ -42,9 +43,9 @@ class App extends React.Component {
         <>
           <Route exact path="/adminproducts" component={AdminProducts} />
           <Route exact path="/carts/:id" component={Cart} />
-          <Route exact path="/LupaPassword/:username/:verivy" component={LupaPassword} />
           <Route exact path ="/statusbelanja" component={StatusBelanja}/>
           <Route exact path="/adminPayment" component = {AdminPayment}/>
+          <Route exact path="/adminreport" component={AdminReport}/>
         </>
       )
     }
@@ -53,7 +54,6 @@ class App extends React.Component {
         <>
           <Route exact path="/editProfile" component={EditProfile} />
           <Route exact path="/carts/:id" component={Cart} />
-          <Route exact path="/LupaPassword/:username/:verivy" component={LupaPassword} />
           <Route exact path ="/statusbelanja" component={StatusBelanja}/>
         </>
       )
@@ -73,6 +73,7 @@ class App extends React.Component {
             <Route exact path="/products" component={Products} />
             <Route exact path="/productdetails/:id" component={ProductDetails} />
             <Route exact path="/paketDetails/:id" component={PaketDetails} />
+            <Route exact path="/LupaPassword/:username/:verivy" component={LupaPassword} />
             {this.renderAdminRoutes()}
           </Switch>
           <Footer />

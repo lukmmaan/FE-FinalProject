@@ -64,7 +64,9 @@ class AdminPayment extends React.Component {
             .then((res) => {
                 console.log(res.data)
                 this.setState({
-                    arrPending: []
+                    arrPending: [],
+                    arrAccepted:[],
+                    arrOthers:[]
                 })
                 this.getTransactions()
                 swal("Sukses", "Transaksi yang anda pilih telah di reject", "info")
@@ -317,8 +319,8 @@ class AdminPayment extends React.Component {
                 )
             }
             else {
-                // return <> <h1 className="App">EMPTY</h1></>
-                {swal("Empty","Transaksi Pending Kosong","error")}
+                return <> <h1 className="App">EMPTY</h1></>
+                // {swal("Empty","Transaksi Pending Kosong","error")}
             }
         }
         else if (this.state.kondisiPage == 2) {
@@ -330,8 +332,8 @@ class AdminPayment extends React.Component {
                 )
             }
             else {
-                // return <> <h1 className="App">EMPTY</h1></>
-                {swal("Empty","Transaksi Accepted Kosong","error")}
+                return <> <h1 className="App">EMPTY</h1></>
+                // {swal("Empty","Transaksi Accepted Kosong","error")}
             }
         }
         else if (this.state.kondisiPage == 3) {
@@ -343,8 +345,8 @@ class AdminPayment extends React.Component {
                 )
             }
             else {
-                // return <> <h1 className="App">EMPTY</h1></>
-                {swal("Empty","Transaksi Others Kosong","error")}
+                return <> <h1 className="App">EMPTY</h1></>
+                // {swal("Empty","Transaksi Rejected Kosong","error")}
             }
         }
     }

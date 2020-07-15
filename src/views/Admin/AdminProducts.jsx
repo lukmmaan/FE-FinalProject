@@ -1,6 +1,7 @@
 import React from "react"
 import Axios from "axios";
 import swal from "sweetalert";
+import "./AdminProduct.css"
 const API_URL = `http://localhost:8080/`;
 class AdminProducts extends React.Component {
     state = {
@@ -9,7 +10,7 @@ class AdminProducts extends React.Component {
         },
         paket: {
             namaPaket: "",
-            imagePaket:"",
+            imagePaket: "",
         },
         addProducts: {
             productName: "",
@@ -45,7 +46,8 @@ class AdminProducts extends React.Component {
         editPaket: {
             namaPaket: "",
             imagePaket: ""
-        }
+        },
+        kondisiHalaman: 0
     }
 
     inputHandler = (e, field, form) => {
@@ -178,7 +180,7 @@ class AdminProducts extends React.Component {
                 this.getProducts()
             })
             .catch((err) => {
-                swal("Error",err.response.data.message,"error")
+                swal("Error", err.response.data.message, "error")
                 console.log(err)
             })
     }
@@ -257,10 +259,11 @@ class AdminProducts extends React.Component {
                         </div>
                     </td>
                     <td>{val.stockPaket}</td>
+                    <td>{val.stockPaketGudang}</td>
                     <td>{val.hargaPaket}</td>
                     <td>
                         <div>
-                            <input onClick={() => this.editPaketHandler(val.id, idx,val)} className="btn btn-warning mr-3" type="button" value="Edit" />
+                            <input onClick={() => this.editPaketHandler(val.id, idx, val)} className="btn btn-warning mr-3" type="button" value="Edit" />
                             <input onClick={() => this.deletePaketHandler(val.id)} className="btn btn-danger" type="button" value="Delete" />
                         </div>
                     </td>
@@ -285,7 +288,7 @@ class AdminProducts extends React.Component {
                     <td>{idx + 1}.</td>
                     <td style={{ textAlign: "center", justifyContent: "center" }}>{val.categoryName}</td>
                     <td>
-                        <input onClick={() => this.editCategoriesHandler(idx, val.id)} className="btn btn-warning" type="button" value="Edit" />
+                        <input onClick={() => this.editCategoriesHandler(idx, val.id,val)} className="btn btn-warning" type="button" value="Edit" />
                         <input onClick={() => this.deleteCategoriesHandler(val.id)} className="ml-3 btn btn-danger" type="button" value="Delete" />
                     </td>
                 </tr>
@@ -308,11 +311,12 @@ class AdminProducts extends React.Component {
     deletePaketHandler = (val) => {
         Axios.delete(`${API_URL}/paket/deletepaket/${val}`)
             .then((res) => {
-                swal("Success", "Your Paket Has Been deleted", "success")
+                // console.log(res.data)
+                swal("Success", res.data, "success")
                 this.getPakets()
             })
             .catch((err) => {
-                console.log(err)
+                swal("Gagal",err.response.data.message,"error")
             })
     }
     deleteProductHandler = (id) => {
@@ -328,29 +332,30 @@ class AdminProducts extends React.Component {
                 console.log(err)
             })
     }
-    editCategoriesHandler = (idx, id) => {
+    editCategoriesHandler = (idx, id,val) => {
         this.setState({
             kondisiEditCategory: id,
-            oldCategoryName: this.state.getCategoryName[idx].categoryName
+            oldCategoryName: this.state.getCategoryName[idx].categoryName,
+            NewCategoryName: val.categoryName
         })
         console.log(id)
         console.log(this.state.oldCategoryName)
     }
-    editProductsHandler = (id, idx,val) => {
+    editProductsHandler = (id, idx, val) => {
         console.log(id)
         this.setState({
             kondisiEditProduct: id,
             oldProductName: this.state.getProductsName[idx].productName,
-            newProduct:val
+            newProduct: val
         })
         console.log(this.state.oldProductName)
     }
-    editPaketHandler = (id, idx,val) => {
+    editPaketHandler = (id, idx, val) => {
         console.log(id)
         this.setState({
             kondisiEditPaket: id,
             oldPaketName: this.state.getPaket[idx].namaPaket,
-            editPaket:val
+            editPaket: val
         })
         console.log(this.state.oldPaketName)
     }
@@ -425,6 +430,7 @@ class AdminProducts extends React.Component {
                     <td>{val.price}</td>
                     <td>{val.size}</td>
                     <td>{val.stock}</td>
+                    <td>{val.stockGudang}</td>
                     <td>{val.description}</td>
                     <td> <img src={val.image} width="50" /></td>
                     <td>{val.categories.map((value, index) => {
@@ -442,204 +448,244 @@ class AdminProducts extends React.Component {
                         )
                     })}</td>
                     <td>
+                        <div className="d-flex flex-row">
                         <input onClick={() => this.editProductsHandler(val.id, idx, val)} className="btn btn-warning mr-4" type="button" value="Edit" />
                         <input onClick={() => this.deleteProductHandler(val.id)} className="btn btn-danger" type="button" value="Delete" />
+                        </div>
                     </td>
                 </tr>
             )
         })
     }
-    render() {
-        return (
-            <div className="App">
-                <hr />
-                <h2>Add Products</h2>
-                <table className="table mt-5">
-                    <thead>
-                        <tr>
-                            <td>Product Name</td>
-                            <td>Price</td>
-                            <td>Size</td>
-                            <td>Stock</td>
-                            <td>Description</td>
-                            <td>Image</td>
-                            <td>Save</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderInputProducts()}
-                    </tbody>
-                </table>
-                <hr />
-                <div className="row">
-                    <div className="col-6" style={{ borderRight: "1px solid grey" }}>
-                        <h2>Add Categories</h2>
-                        <div className="d-flex flex-row" style={{ justifyContent: "center" }}>
-                            <input
-                                style={{ width: "400px", marginRight: "50px", height: "40px" }}
-                                onChange={
-                                    (e) => this.setState({ category: { categoryName: e.target.value } })
-                                } className="form-control mb-3" type="text" placeholder="Category Name" />
-                            <input style={{ height: "40px" }} onClick={this.addCategoryHandler} className="btn btn-primary" type="button" value="Save" />
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <h2>Add Categories to Product</h2>
-                        <div className=" d-flex flex-row" style={{ justifyContent: "center" }}>
-                            <select className="form-control" onChange={(e) => this.penampung(e.target.value, "productTampung")} name="products" id="products" style={{ marginRight: "30px", width: "200px" }}>
-                                <option value=""></option>
-                                {this.renderProducts()}
-                            </select>
-                            <select className="form-control" onChange={(e) => this.penampung(e.target.value, "categoryTampung")} style={{ marginRight: "30px", width: "200px" }} name="products" id="products">
-                                <option value=""></option>
-                                {this.renderCategories()}
-                            </select>
-                            <input className="btn btn-primary" onClick={this.saveAddCategoriesToProducts} type="button" value="Save" />
-                        </div>
-                    </div>
-                </div>
-                <hr />
-                <div className="row">
-                    <div className="col-6" style={{ borderRight: "1px solid grey" }}>
-                        <h2>Add New Paket</h2>
-                        <div className="d-flex flex-row" style={{ justifyContent: "center" }}>
-                            <input
-                                style={{ width: "200px", marginRight: "50px", height: "40px" }}
-                                onChange={(e) => this.inputHandler(e, "namaPaket", "paket")}
-                                className="form-control mb-3" type="text" placeholder="Paket Name" />
-                            <input
-                                style={{ width: "200px", marginRight: "50px", height: "40px" }}
-                                onChange={(e) => this.inputHandler(e, "imagePaket", "paket")}
-                                className="form-control mb-3" type="text" placeholder="Image Link" />
-                            <input style={{ height: "40px" }} onClick={this.addPaketHandler} className="btn btn-primary" type="button" value="Save" />
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <h2>Add Product To Paket</h2>
-                        <div className=" d-flex flex-row" style={{ justifyContent: "center" }}>
-                            <select className="form-control" onChange={(e) => this.penampung(e.target.value, "paketTampung")} style={{ marginRight: "30px", width: "200px" }} name="products" id="products">
-                                <option value=""></option>
-                                {this.renderPakets()}
-                            </select>
-                            <select className="form-control" onChange={(e) => this.penampung(e.target.value, "productPaketTampung")} style={{ marginRight: "30px", width: "200px" }} name="products" id="products">
-                                <option value=""></option>
-                                {this.renderProducts()}
-                            </select>
-                            <input className="btn btn-primary" onClick={this.saveAddProductToPaket} type="button" value="Save" />
-                        </div>
-                    </div>
-                </div>
+
+    renderPage = () => {
+        if (this.state.kondisiHalaman == 1) {
+            return (
                 <div>
-                    <hr />
-                    <h2>Edit Products</h2>
+                    <h2>Add Products</h2>
                     <table className="table mt-5">
                         <thead>
                             <tr>
-                                <td>No.</td>
-                                <td>Product</td>
+                                <td>Product Name</td>
                                 <td>Price</td>
                                 <td>Size</td>
                                 <td>Stock</td>
                                 <td>Description</td>
                                 <td>Image</td>
-                                <td>Categories</td>
-                                <td>Button</td>
+                                <td>Save</td>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.renderEditProducts()}
+                            {this.renderInputProducts()}
                         </tbody>
                     </table>
-                </div>
-                {
-                    (!this.state.kondisiEditProduct) ? null : (
-                        <div className="App">
-                            <h2>Edit Product {this.state.oldProductName} Form</h2>
-                            <table className="table mt-5">
-                                <tr>
-                                    <td><input value={this.state.newProduct.productName} onChange={(e) => this.inputHandler(e, "productName", "newProduct")} className="form-control" type="text" placeholder="Product Name" /></td>
-                                    <td><input value={this.state.newProduct.price} onChange={(e) => this.inputHandler(e, "price", "newProduct")} className="form-control" type="text" placeholder="Price" /></td>
-                                </tr>
-                                <tr>
-                                    <td><input value={this.state.newProduct.size} onChange={(e) => this.inputHandler(e, "size", "newProduct")} className="form-control" type="text" placeholder="Size" /></td>
-                                    <td><input value={this.state.newProduct.description} onChange={(e) => this.inputHandler(e, "description", "newProduct")} className="form-control" type="text" placeholder="Description" /></td>
-                                </tr>
-                                <tr>
-                                    <td><input value={this.state.newProduct.stock} onChange={(e) => this.inputHandler(e, "stock", "newProduct")} className="form-control" type="text" placeholder="Stock" /></td>
-                                    <td><input value={this.state.newProduct.image} onChange={(e) => this.inputHandler(e, "image", "newProduct")} className="form-control" type="text" placeholder="Image" /></td>
-                                </tr>
-                            </table>
-                            <input onClick={this.saveEditProduct} className="form-control" className="btn btn-primary" type="button" value="Save" />
-                            <input onClick={() => this.setState({ kondisiEditProduct: 0 })} type="button" value="Cancel" className="ml-3 btn btn-danger" />
-                        </div>
-                    )
-                }
-                <div>
-                    <hr />
-                    <h2>Edit Categories</h2>
-                    <div style={{ display: "flex", justifyContent: 'center' }}>
-                        <table className="table">
+                    <div>
+                        <hr />
+                        <h2>Edit Products</h2>
+                        <table className="table mt-5">
                             <thead>
                                 <tr>
                                     <td>No.</td>
-                                    <td>CategoryName</td>
+                                    <td>Product</td>
+                                    <td>Price</td>
+                                    <td>Size</td>
+                                    <td>Stock App</td>
+                                    <td>Stock Gudang</td>
+                                    <td>Description</td>
+                                    <td>Image</td>
+                                    <td>Categories</td>
                                     <td>Button</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.renderEditCategories()}
+                                {this.renderEditProducts()}
                             </tbody>
                         </table>
                     </div>
                     {
-                        (!this.state.kondisiEditCategory) ? null : (
+                        (!this.state.kondisiEditProduct) ? null : (
+                            <div className="App">
+                                <hr/>
+                                <h2>Edit Product {this.state.oldProductName} Form</h2>
+                                <table className="table mt-5">
+                                    <tr>
+                                        <td><input value={this.state.newProduct.productName} onChange={(e) => this.inputHandler(e, "productName", "newProduct")} className="form-control" type="text" placeholder="Product Name" /></td>
+                                        <td><input value={this.state.newProduct.price} onChange={(e) => this.inputHandler(e, "price", "newProduct")} className="form-control" type="text" placeholder="Price" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input value={this.state.newProduct.size} onChange={(e) => this.inputHandler(e, "size", "newProduct")} className="form-control" type="text" placeholder="Size" /></td>
+                                        <td><input value={this.state.newProduct.description} onChange={(e) => this.inputHandler(e, "description", "newProduct")} className="form-control" type="text" placeholder="Description" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input value={this.state.newProduct.stock} onChange={(e) => this.inputHandler(e, "stock", "newProduct")} className="form-control" type="text" placeholder="Stock" /></td>
+                                        <td><input value={this.state.newProduct.image} onChange={(e) => this.inputHandler(e, "image", "newProduct")} className="form-control" type="text" placeholder="Image" /></td>
+                                    </tr>
+                                </table>
+                                <input onClick={this.saveEditProduct} className="form-control" className="btn btn-primary" type="button" value="Save" />
+                                <input onClick={() => this.setState({ kondisiEditProduct: 0 })} type="button" value="Cancel" className="ml-3 btn btn-danger" />
+                            </div>
+                        )
+                    }
+
+                </div>
+            )
+        }
+        else if (this.state.kondisiHalaman == 2) {
+            return (
+                <div>
+                    <div className="row">
+                        <div className="col-6" style={{ borderRight: "1px solid grey" }}>
+                            <h2>Add Category</h2>
+                            <div className="d-flex flex-row" style={{ justifyContent: "center" }}>
+                                <input
+                                    style={{ width: "400px", marginRight: "50px", height: "40px" }}
+                                    onChange={
+                                        (e) => this.setState({ category: { categoryName: e.target.value } })
+                                    } className="form-control mb-3" type="text" placeholder="Category Name" />
+                                <input style={{ height: "40px" }} onClick={this.addCategoryHandler} className="btn btn-primary" type="button" value="Save" />
+                            </div>
+                        </div>
+                        <div className="col-6">
+                            <h2>Add Category to Product</h2>
+                            <div className=" d-flex flex-row" style={{ justifyContent: "center" }}>
+                                <select className="form-control" onChange={(e) => this.penampung(e.target.value, "productTampung")} name="products" id="products" style={{ marginRight: "30px", width: "200px" }}>
+                                    <option value="" selected disabled>Product</option>
+                                    {this.renderProducts()}
+                                </select>
+                                <select className="form-control" onChange={(e) => this.penampung(e.target.value, "categoryTampung")} style={{ marginRight: "30px", width: "200px" }} name="products" id="products">
+                                    <option value="" selected disabled>Category</option>
+                                    {this.renderCategories()}
+                                </select>
+                                <input className="btn btn-primary" onClick={this.saveAddCategoriesToProducts} type="button" value="Save" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <hr />
+                        <h2>Edit Categories</h2>
+                        <div style={{ display: "flex", justifyContent: 'center' }}>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <td>No.</td>
+                                        <td>CategoryName</td>
+                                        <td>Button</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.renderEditCategories()}
+                                </tbody>
+                            </table>
+                        </div>
+                        {
+                            (!this.state.kondisiEditCategory) ? null : (
+                                <div>
+                                    <h2>Edit Category {this.state.oldCategoryName} Form</h2>
+                                    <div className="d-flex flex-row" style={{ justifyContent: "center" }}>
+                                        <input value={this.state.NewCategoryName} placeholder="Edit Here" onChange={(e) => this.penampung(e.target.value, "NewCategoryName")} style={{ width: "400px" }} className="form-control" type="text" />
+                                        <input onClick={this.saveEditCategory} className="ml-3 btn btn-success" type="button" value="Save" />
+                                        <input onClick={() => this.setState({ kondisiEditCategory: 0 })} type="button" value="Cancel" className="ml-3 btn btn-danger" />
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            )
+        }
+        else if (this.state.kondisiHalaman == 3) {
+            return (
+                <div>
+                    <div className="row">
+                        <div className="col-6" style={{ borderRight: "1px solid grey" }}>
+                            <h2>Add New Paket</h2>
+                            <div className="d-flex flex-row" style={{ justifyContent: "center" }}>
+                                <input
+                                    style={{ width: "200px", marginRight: "50px", height: "40px" }}
+                                    onChange={(e) => this.inputHandler(e, "namaPaket", "paket")}
+                                    className="form-control mb-3" type="text" placeholder="Paket Name" />
+                                <input
+                                    value={this.state.paket.imagePaket}
+                                    style={{ width: "200px", marginRight: "50px", height: "40px" }}
+                                    onChange={(e) => this.inputHandler(e, "imagePaket", "paket")}
+                                    className="form-control mb-3" type="text" placeholder="Image Link" />
+                                <input style={{ height: "40px" }} onClick={this.addPaketHandler} className="btn btn-primary" type="button" value="Save" />
+                            </div>
+                        </div>
+                        <div className="col-6">
+                            <h2>Add Product To Paket</h2>
+                            <div className=" d-flex flex-row" style={{ justifyContent: "center" }}>
+                                <select className="form-control" onChange={(e) => this.penampung(e.target.value, "paketTampung")} style={{ marginRight: "30px", width: "200px" }} name="products" id="products">
+                                    <option value="" disabled selected>Paket</option>
+                                    {this.renderPakets()}
+                                </select>
+                                <select className="form-control" onChange={(e) => this.penampung(e.target.value, "productPaketTampung")} style={{ marginRight: "30px", width: "200px" }} name="products" id="products">
+                                    <option value="" disabled selected>Product</option>
+                                    {this.renderProducts()}
+                                </select>
+                                <input className="btn btn-primary" onClick={this.saveAddProductToPaket} type="button" value="Save" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <hr />
+                        <h2>Edit Paket</h2>
+                        <div>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <td>No.</td>
+                                        <td>Nama Paket</td>
+                                        <td>Isi Paket</td>
+                                        <td>Stock Paket</td>
+                                        <td>Stock Paket Gudang</td>
+                                        <td>Harga Paket</td>
+                                        <td>Button</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.renderPaketEdit()}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {
+                        (this.state.kondisiEditPaket == 0) ? null : (
                             <div>
-                                <h2>Edit Category {this.state.oldCategoryName} Form</h2>
-                                <div className="d-flex flex-row" style={{ justifyContent: "center" }}>
-                                    <input placeholder="Edit Here" onChange={(e) => this.penampung(e.target.value, "NewCategoryName")} style={{ width: "400px" }} className="form-control" type="text" />
-                                    <input onClick={this.saveEditCategory} className="ml-3 btn btn-success" type="button" value="Save" />
-                                    <input onClick={() => this.setState({ kondisiEditCategory: 0 })} type="button" value="Cancel" className="ml-3 btn btn-danger" />
+                                <div className="d-flex flex-column container" >
+                                    <h4 style={{ marginRight: "15px" }}>Edit {this.state.oldPaketName} :</h4>
+                                    <input value={this.state.editPaket.namaPaket} onChange={(e) => this.inputHandler(e, "namaPaket", "editPaket")} placeholder="Nama Paket" className="form-control mt-3" type="text" />
+                                    <input value={this.state.editPaket.imagePaket} onChange={(e) => this.inputHandler(e, "imagePaket", "editPaket")} placeholder="Image Paket" className="form-control mt-3" type="text" />
+                                    <center>
+                                        <input onClick={this.saveEditPaket} className="btn btn-warning mt-3 mr-3" style={{ width: "60px" }} type="button" value="Save" />
+                                        <input onClick={() => this.setState({ kondisiEditPaket: 0 })} type="button" value="Cancel" className="btn btn-danger mt-3" style={{ width: "70px" }} />
+                                    </center>
                                 </div>
                             </div>
                         )
                     }
                 </div>
-                <div>
-                    <hr />
-                    <h2>Edit Paket</h2>
-                    <div>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <td>No.</td>
-                                    <td>Nama Paket</td>
-                                    <td>Isi Paket</td>
-                                    <td>Stock Paket</td>
-                                    <td>Harga Paket</td>
-                                    <td>Button</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.renderPaketEdit()}
-                            </tbody>
-                        </table>
+            )
+        }
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <div className="row bgImage10" style={{color:"gray", height: "400px" }}>
+                    <div onClick={() => this.setState({ kondisiHalaman: 1 })} className="col-4 textHover2" style={{ marginTop: "200px" }}>
+                        <h1>PRODUCTS</h1>
+                    </div>
+                    <div onClick={() => this.setState({ kondisiHalaman: 2 })} className="col-4 textHover2" style={{ marginTop: "200px" }}>
+                        <h1>CATEGORIES</h1>
+                    </div>
+                    <div onClick={() => this.setState({ kondisiHalaman: 3 })} className="col-4 textHover2" style={{ marginTop: "200px" }}>
+                        <h1>PACKAGES</h1>
                     </div>
                 </div>
-                {
-                    (this.state.kondisiEditPaket == 0) ? null : (
-                        <div>
-                            <div className="d-flex flex-column container" >
-                                <h4 style={{ marginRight: "15px" }}>Edit {this.state.oldPaketName} :</h4>
-                                <input value={this.state.editPaket.namaPaket} onChange={(e) => this.inputHandler(e, "namaPaket", "editPaket")} placeholder="Nama Paket" className="form-control mt-3" type="text" />
-                                <input value={this.state.editPaket.imagePaket} onChange={(e) => this.inputHandler(e, "imagePaket", "editPaket")} placeholder="Image Paket" className="form-control mt-3" type="text" />
-                                <center>
-                                    <input onClick={this.saveEditPaket} className="btn btn-warning mt-3 mr-3" style={{ width: "60px" }} type="button" value="Save" />
-                                    <input onClick={() => this.setState({ kondisiEditPaket: 0 })} type="button" value="Cancel" className="btn btn-danger mt-3" style={{ width: "70px" }} />
-                                </center>
-                            </div>
-                        </div>
-                    )
-                }
+                <div className="mt-5">
+                {this.renderPage()}
+                </div>
             </div>
         )
     }

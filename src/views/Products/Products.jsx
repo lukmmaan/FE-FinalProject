@@ -174,8 +174,8 @@ class Products extends React.Component {
                     <center className="mt-5">
                         <h1>ALL PRODUCTS</h1>
                         <div className="d-flex flex-row w-100">
-                            <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ minPrice: +e.target.value })} className="form-control ml-4 mr-4" type="text" placeholder="Min Price" />
-                            <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ maxPrice: 1 * e.target.value })} className="form-control mr-4" type="text" placeholder="Max Price" />
+                            <input maxlength="9" onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ minPrice: +e.target.value })} className="form-control ml-4 mr-4" type="text" placeholder="Min Price" />
+                            <input maxlength="9" onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} onChange={(e) => this.setState({ maxPrice: 1 * e.target.value })} className="form-control mr-4" type="text" placeholder="Max Price" />
                             <input onKeyUp={() => this.getProductsByPrice(this.state.categoryNameFilter)} className="form-control mr-4" onChange={(e) => this.setState({ searchProductAll: e.target.value })} type="text" placeholder="Product Name" />
                             <select onClick={() => this.getProductsByPrice(this.state.categoryNameFilter)} className="form-control w-40" onChange={(e) => this.setState({ categoryNameFilter: e.target.value })} name="category" id="category" style={{ marginRight: "30px", width: "500px" }}>
                                 <option value="All">All</option>
@@ -215,7 +215,7 @@ class Products extends React.Component {
         else if (this.state.kondisiPage == 4) {
             return (
                 <div className="mb-5 mt-5">
-                    <h1 className="App">ALL PACKAGE</h1>
+                    <h1 className="App">ALL PACKAGES</h1>
                     <div className="row" style={{ justifyContent: "center" }}>
                         {this.renderPaket()}
                     </div>
@@ -232,7 +232,7 @@ class Products extends React.Component {
                         <h2>All Products</h2>
                     </div>
                     <div className="col-6 textAja" style={{marginTop:"200px"}} onClick={() => this.setState({ kondisiPage: 4 })}>
-                        <h2>Package</h2>
+                        <h2>Packages</h2>
                     </div>
                 </>
             )
@@ -244,7 +244,7 @@ class Products extends React.Component {
                         <h2>All Products</h2>
                     </div>
                     <div className="col-6 textAja" style={{ textDecoration: "line-through",marginTop:"200px" }} onClick={() => this.setState({ kondisiPage: 4 })}>
-                        <h2>Package</h2>
+                        <h2>Packages</h2>
                     </div>
                 </>
             )
@@ -256,7 +256,7 @@ class Products extends React.Component {
                         <h2>All Products</h2>
                     </div>
                     <div className="col-6 textAja" style={{marginTop:"200px"}} onClick={() => this.setState({ kondisiPage: 4 })}>
-                        <h2>Package</h2>
+                        <h2>Packages</h2>
                     </div>
                 </>
             )

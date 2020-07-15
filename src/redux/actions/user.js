@@ -59,6 +59,7 @@ export const userKeepLogin = (userData) => {
   return (dispatch) => {
     Axios.post(`${API_URL}/users/login/${userData.id}`)
       .then((res) => {
+        // console.log(res.data)
         Axios.get(`${API_URL}/carts/totalCart/${res.data.id}/`)
           .then((res) => {
             // console.log("masuk")
@@ -95,8 +96,9 @@ export const logoutHandler = () => {
 };
 
 export const changeProfileHandler = (userData) => {
+  console.log(userData)
   return {
-    type: ON_CHANGE_PROFILE,
+    type: ON_LOGIN_SUCCESS,
     payload: userData
   }
 }

@@ -1,0 +1,14 @@
+.imgBg1{
+    background-image: url("https://www.osprey.com/images/heros/ALP_Travel_Header.jpg") ;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.hoverP:hover{
+    cursor: pointer;
+    color: pink;
+}
+
+.hoverP{
+    animation: ease-in-out 1s;
+}

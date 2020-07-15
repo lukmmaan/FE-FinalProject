@@ -1,0 +1,10 @@
+.bgImage10{
+    background-image: url("https://coverfiles.alphacoders.com/495/49555.jpg") ;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.textHover2:hover{
+    cursor: pointer;
+    color: black;
+}
