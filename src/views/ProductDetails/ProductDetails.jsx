@@ -38,14 +38,23 @@ class ProductDetails extends React.Component {
         //     console.log(this.props.user)
         //     swal("Gagal",`Verify Akun terlebih dahulu untuk memasukkan ke keranjang`,"error")
         // }
-        else if (this.state.arrProduct.stock <= 0) {
-            swal("Gagal", "Product Ini Habis", "success")
+        else if (this.state.arrProduct.stock == 0) {
+            swal("Gagal", "Product Ini Habis", "error")
         }
         else if (this.props.user.role == "admin") {
             swal("Gagal", "Admin Ga boleh Belanja", "error")
         }
         else {
-            console.log(this.props.user)
+            // console.log(this.props.user)
+            Axios.put(`${API_URL}/carts/update/${this.props.match.params.id}/0/${this.props.user.id}`)
+                .then((resEdit) => {
+                    // swal("Sukses", resEdit, "success")
+                    console.log(resEdit)
+                    this.getProductDetail()
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
             Axios.get(`${API_URL}/carts/product/${this.props.user.id}/${this.props.match.params.id}`)
                 .then((res) => {
                     // console.log(res.data)
@@ -56,6 +65,7 @@ class ProductDetails extends React.Component {
                                 swal("Berhasil", "Anda Berhasil membeli item ini untuk pertama kali", "success")
                                 // console.log(res.data)
                                 this.props.qtyCart(this.props.user.id)
+
                             })
                             .catch((err) => {
                                 console.log(err)
@@ -77,6 +87,7 @@ class ProductDetails extends React.Component {
                 .catch((err) => {
                     console.log(err)
                 })
+
         }
     }
     render() {
@@ -90,7 +101,7 @@ class ProductDetails extends React.Component {
                                 <img src={this.state.arrProduct.image} width="200px" />
                             </div>
                         </div>
-                        <div className="col-7 d-flex flex-column" style={{ paddingLeft: "40px",height:"460px" }} >
+                        <div className="col-7 d-flex flex-column" style={{ paddingLeft: "40px", height: "460px" }} >
                             <div>
                                 <h5 className="App mt-5">
                                     {this.state.arrProduct.productName}

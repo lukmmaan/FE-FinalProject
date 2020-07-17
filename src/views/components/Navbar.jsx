@@ -10,7 +10,8 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
 class Navbar extends React.Component {
     state = {
         dropdownOpen: false,
-        stateLogout:0
+        stateLogout:0,
+        date: new Date(),
     }
     toggleDropdown = () => {
         this.setState({
@@ -21,6 +22,14 @@ class Navbar extends React.Component {
         this.props.onLogout()
         console.log(this.props.user.username)
     }
+    componentDidMount(){
+        this.timer = setInterval(() => {
+            this.setState({ date: new Date()})
+        }, 1000);
+    }
+    // lifesMustGoOn = () =>{
+    //     this.set
+    // }
     render() {
         return (
             <>
@@ -115,8 +124,10 @@ class Navbar extends React.Component {
                                     <a className="teksHitam" href="#">Products</a>
                                 </Link>
                             </li>
-                            <li className="menu-list-item">Behind The Packs</li>
-                            <li className="menu-list-item">Stories</li>
+                            {/* <li className="menu-list-item">Behind The Packs</li> */}
+                            {/* <li className="menu-list-item">Stories</li> */}
+                            {/* <li className="menu-list-item">{this.state.date.toLocaleDateString()}</li> */}
+                            <li className="menu-list-item">{this.state.date.toLocaleString()}</li>
                         </ul>
                     </div>
                     <div>

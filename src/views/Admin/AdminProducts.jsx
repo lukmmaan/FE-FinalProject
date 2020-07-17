@@ -324,7 +324,7 @@ class AdminProducts extends React.Component {
         Axios.delete(`${API_URL}/products/${id}`)
             .then((res) => {
                 console.log(res.data)
-                swal("Sukses", "Product Telah Dihapus", "success")
+                swal("Sukses", res.data, "success")
                 this.getProducts()
                 this.getPakets()
             })

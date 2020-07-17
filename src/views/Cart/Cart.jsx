@@ -43,7 +43,7 @@ class Cart extends React.Component {
         }
     }
     deleteCart = (id) => {
-        Axios.delete(`${API_URL}/carts/${id}`)
+        Axios.delete(`${API_URL}/carts/qty/${id}`)
             .then((res) => {
                 swal("Sukses", "Cart Telah Terhapus", "success")
                 this.getCart()
@@ -115,26 +115,20 @@ class Cart extends React.Component {
                         arrBaru: this.state.arrCart
                     })
                     console.log(res.data)
-                    Axios.put(`${API_URL}/carts/update/${this.props.user.id}`)
-                        .then((resEdit) => {
-                            // swal("Sukses", resEdit, "success")
-                            console.log(resEdit)
-                            res.data.map((val) => {
-                                Axios.delete(`${API_URL}/carts/${val.id}`)
-                                    .then((res) => {
-                                        console.log(res.data)
-                                        swal("Sukses", "Sukses Pembelian", "success")
-                                        this.getCart()
-                                        this.props.qtyCart(this.props.user.id)
-                                    })
-                                    .catch((err) => {
-                                        console.log(err)
-                                    })
+
+                    res.data.map((val) => {
+                        Axios.delete(`${API_URL}/carts/${val.id}`)
+                            .then((res) => {
+                                console.log(res.data)
+                                swal("Sukses", "Sukses Pembelian", "success")
+                                this.getCart()
+                                this.props.qtyCart(this.props.user.id)
                             })
-                        })
-                        .catch((err)=>{
-                            console.log(err)
-                        })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    })
+
                     Axios.post(`${API_URL}/transactions/addToTransactions/${this.props.user.id}`, {
                         totalPrice: +this.state.hargaTotal,
                         status: "pending",
@@ -203,7 +197,7 @@ class Cart extends React.Component {
                                 {
                                     (this.state.arrCart.length == 0) ? (
                                         <div className="App mt-5 mb-5">
-                                            <h1 style={{color:"grey"}}>CART ANDA KOSONG, MARI BELANJA ! ! !</h1>
+                                            <h1 style={{ color: "grey" }}>CART ANDA KOSONG, MARI BELANJA ! ! !</h1>
                                         </div>
                                     ) : (
                                             <div className="App mt-5 mb-5">

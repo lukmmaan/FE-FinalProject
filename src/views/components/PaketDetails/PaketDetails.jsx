@@ -35,7 +35,7 @@ class PaketDetails extends React.Component {
             return (
                 <tr>
                     <td className="tdCustom">{val.productName}</td>
-                    <td className="tdCustom"><img src={val.image} width="40px"/></td>
+                    <td className="tdCustom"><img src={val.image} width="40px" /></td>
                 </tr>
             )
         })
@@ -48,13 +48,22 @@ class PaketDetails extends React.Component {
         //     console.log(this.props.user)
         //     swal("Gagal",`Verify Akun terlebih dahulu untuk memasukkan ke keranjang`,"error")
         // }
-        else if (this.state.arrPaket.stockPaket <= 0) {
-            swal("Gagal", "Paket Ini Habis", "success")
+        else if (this.state.arrPaket.stockPaket == 0) {
+            swal("Gagal", "Paket Ini Habis", "error")
         }
         else if (this.props.user.role == "admin") {
             swal("Gagal", "Admin Ga boleh Belanja", "error")
         }
         else {
+            Axios.put(`${API_URL}/carts/update/0/${this.props.match.params.id}/${this.props.user.id}`)
+            .then((resEdit) => {
+                // swal("Sukses", resEdit, "success")
+                console.log(resEdit)
+                this.getPaketDetail()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
             Axios.get(`${API_URL}/carts/paket/${this.props.user.id}/${this.props.match.params.id}`)
                 .then((res) => {
                     console.log(res.data)
@@ -91,42 +100,42 @@ class PaketDetails extends React.Component {
     render() {
         return (
             <div>
-                <hr/>
-            <div className="d-flex" style={{flex:1, justifyContent:"center"}}>
-                {/* <hr /> */}
-                <div className="row imgCustom bgKucing" style={{ margin: "40px", width: "730px", borderRadius: "16px" }}>
-                    <div className="col-7 d-flex flex-column">
-                        <div style={{ marginLeft:"130px",marginTop: "30px" }}>
-                            <img src={this.state.arrPaket.imagePaket} width="200px" />
-                        </div>
-                        <div style={{ borderTop:"1px solid black", marginTop: "40px",fontSize:"18px" }}>
-                            <table className="borderCstm table" style={{textAlign:"right"}}>
-                                <tbody>
-                                    {this.renderProducts()}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="col-5 d-flex flex-column" style={{ borderLeft:"1px solid black",marginTop: "30px", paddingLeft: "20px" }} >
-                        <div>
-                            <h5 style={{marginBottom:"60px"}} className="mt-5 ">
-                                {this.state.arrPaket.namaPaket}
-                            </h5>
-                        </div>
-                        <div style={{borderRadius: "16px" }}>
-                            <div>
-                                <h6>Price : Rp.{this.state.arrPaket.hargaPaket}</h6>
-                                <h6>Stock : {this.state.arrPaket.stockPaket} Pcs</h6>
-                                <h6>Sold : {this.state.arrPaket.soldPaket} Pcs</h6>
+                <hr />
+                <div className="d-flex" style={{ flex: 1, justifyContent: "center" }}>
+                    {/* <hr /> */}
+                    <div className="row imgCustom bgKucing" style={{ margin: "40px", width: "730px", borderRadius: "16px" }}>
+                        <div className="col-7 d-flex flex-column">
+                            <div style={{ marginLeft: "130px", marginTop: "30px" }}>
+                                <img src={this.state.arrPaket.imagePaket} width="200px" />
+                            </div>
+                            <div style={{ borderTop: "1px solid black", marginTop: "40px", fontSize: "18px" }}>
+                                <table className="borderCstm table" style={{ textAlign: "right" }}>
+                                    <tbody>
+                                        {this.renderProducts()}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div className="mt-4">
-                            <input onClick={this.addToCartHandler} className="btn btn-primary" type="button" value="Add to Cart" />
+                        <div className="col-5 d-flex flex-column" style={{ borderLeft: "1px solid black", marginTop: "30px", paddingLeft: "20px" }} >
+                            <div>
+                                <h5 style={{ marginBottom: "60px" }} className="mt-5 ">
+                                    {this.state.arrPaket.namaPaket}
+                                </h5>
+                            </div>
+                            <div style={{ borderRadius: "16px" }}>
+                                <div>
+                                    <h6>Price : Rp.{this.state.arrPaket.hargaPaket}</h6>
+                                    <h6>Stock : {this.state.arrPaket.stockPaket} Pcs</h6>
+                                    <h6>Sold : {this.state.arrPaket.soldPaket} Pcs</h6>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <input onClick={this.addToCartHandler} className="btn btn-primary" type="button" value="Add to Cart" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
+                </div>
             </div>
         )
     }
