@@ -121,6 +121,15 @@ class EditProfile extends React.Component {
             )
         }
     }
+    getVerify = () =>{
+        Axios.get(`${API_URL}/users/email/verify/${this.props.user.username}`)
+        .then((res)=>{
+            swal("Sukses",res.data,"success")
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
     render() {
         if (this.state.kondisiUbahPassword) {
             return <Redirect to="/" />
@@ -151,9 +160,12 @@ class EditProfile extends React.Component {
                                                         Account is Verified
                                                     </h6>
                                                 ) : (
+                                                        <>
                                                         <h6>
                                                             Account isn't Verified
                                                         </h6>
+                                                        <input onClick={this.getVerify} className="btn btn-primary" type="button" value="Verify"/>
+                                                        </>
                                                     )
                                             }
                                         </div>

@@ -62,6 +62,9 @@ class Navbar extends React.Component {
                                                         <Link to="/adminreport">
                                                             <DropdownItem>Report</DropdownItem>
                                                         </Link>
+                                                        <Link to="/adminMember">
+                                                            <DropdownItem>Member</DropdownItem>
+                                                        </Link>
                                                     </>
                                                 ) :
                                                     (

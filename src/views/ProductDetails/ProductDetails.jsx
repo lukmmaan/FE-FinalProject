@@ -8,7 +8,9 @@ const API_URL = `http://localhost:8080/`;
 class ProductDetails extends React.Component {
 
     state = {
-        arrProduct: {},
+        arrProduct: {
+            productName:"",
+        },
         cart: {
             quantity: 0
         }
@@ -76,7 +78,7 @@ class ProductDetails extends React.Component {
                         Axios.put(`${API_URL}/carts/${res.data[0].id}`)
                             .then((resEdit) => {
                                 console.log(resEdit.data)
-                                swal("Berhasil", `Anda Berhasil membeli Item ini sebanyak ${res.data[0].quantity + 1}`, "success")
+                                swal("Berhasil", `Anda Berhasil memasukan Item ini ke keranjang sebanyak ${res.data[0].quantity + 1}`, "success")
                                 this.props.qtyCart(this.props.user.id)
                             })
                             .catch((err) => {
@@ -92,45 +94,36 @@ class ProductDetails extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div style={{backgroundColor:"pink",height:"670px"}}>
                 <hr />
-                <div className="d-flex" style={{ flex: 1, justifyContent: "center" }}>
-                    <div className="row bgKucing" style={{ width: "750px", margin: "40px" }}>
-                        <div className="col-5">
-                            <div className="App" style={{ marginTop: "100px", marginLeft: "100px" }}>
-                                <img src={this.state.arrProduct.image} width="200px" />
-                            </div>
-                        </div>
-                        <div className="col-7 d-flex flex-column" style={{ paddingLeft: "40px", height: "460px" }} >
-                            <div>
-                                <h5 className="App mt-5">
-                                    {this.state.arrProduct.productName}
-                                </h5>
-                            </div>
-                            <div>
-                                <h6 style={{ textAlign: "justify", marginRight: "70px" }} className="mt-2">{this.state.arrProduct.description},Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero sequi, optio necessitatibus quos incidunt, consectetur reprehenderit, vel quasi dicta omnis enim ad. Unde ea culpa eius maiores laudantium vel hic!</h6>
-                            </div>
-                            <div>
-                                <h6 className="mt-2" style={{ color: "red" }}>Price : Rp.{this.state.arrProduct.price}</h6>
-                            </div>
-                            <div>
-                                <p className="mt-1">Size : {this.state.arrProduct.size}</p>
-                            </div>
-                            <div>
-                                <p>Stock : {this.state.arrProduct.stock}</p>
-                            </div>
-                            <div>
-                                <p>Sold : {this.state.arrProduct.sold}</p>
-                            </div>
-                            <div>
-                                <center>
-                                    <input onClick={this.addToCartHandler} className="btn btn-primary" type="button" value="Add to Cart" />
-                                </center>
-                            </div>
+                {/* <center> */}
+                {/* <div style={{width:"700px"}}> */}
+                <div className="row container1" style={{width:"900px", marginLeft:"17%",marginTop:"100px",height:"500px"}}>
+                    <div className="col-5">
+                        <div style={{ marginTop: "60px" }}>
+                            <img src={this.state.arrProduct.image} style={{height:"300px",width:"310px",marginLeft:"20px"}}/>
                         </div>
                     </div>
+                    <div className="col-7 d-flex flex-column fontCustom" style={{ paddingLeft: "40px", height: "460px" }} >
+                        <div>
+                            <h1 className="mt-5">
+                                {this.state.arrProduct.productName.toUpperCase()}
+                            </h1>
+                            <h2 className="mt-2" style={{color:"pink"}}>Price : Rp.{this.state.arrProduct.price}</h2>
+                            <p style={{ textAlign: "justify" }} className="mt-2 mr-4 fontCustom">{this.state.arrProduct.description},Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero sequi, optio necessitatibus quos incidunt, consectetur reprehenderit, vel quasi dicta omnis enim ad. Unde ea culpa eius maiores laudantium vel hic!</p>
+                            <p className="mt-2 fontCustom">Size : {this.state.arrProduct.size}</p>
+                            <p className="mt-2 fontCustom">Stock : {this.state.arrProduct.stock}</p>
+                            <p className="mt-2 fontCustom">Sold : {this.state.arrProduct.sold}</p>
+                        </div>
+                            {/* <center> */}
+                        <div>
+                                <input onClick={this.addToCartHandler} type="button" className="buttonCustom1" value="Add to Cart" />
+                        </div>
+                            {/* </center> */}
+                    </div>
                 </div>
-
+                {/* </div> */}
+                {/* </center> */}
             </div>
         )
     }
