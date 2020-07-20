@@ -47,8 +47,16 @@ class AdminProducts extends React.Component {
             namaPaket: "",
             imagePaket: ""
         },
-        kondisiHalaman: 0
+        kondisiHalaman: 0,
+        selectedFile: null,
     }
+
+    fileChangeHandler = (e) => {
+        this.setState({
+            selectedFile: e.target.files[0]
+        });
+    }
+
 
     inputHandler = (e, field, form) => {
         const { value } = e.target;
@@ -99,7 +107,21 @@ class AdminProducts extends React.Component {
     }
     addProductsHandler = () => {
         // console.log(this.state.addProducts)
-        Axios.post(`${API_URL}/products`, this.state.addProducts)
+
+        let formData = new FormData();
+        formData.append(
+            "file",
+            this.state.selectedFile,
+            this.state.selectedFile.name
+        )
+
+        formData.append(
+            "productData",
+            JSON.stringify(this.state.addProducts)
+        )
+
+
+        Axios.post(`${API_URL}/products`, formData)
             .then((res) => {
                 console.log(res.data)
                 swal("Berhasil", "Berhasil Menambah Product", "success")
@@ -157,7 +179,7 @@ class AdminProducts extends React.Component {
                 <td><input onChange={(e) => this.inputHandler(e, "size", "addProducts")} className="form-control" type="text" placeholder="Size" /></td>
                 <td><input onChange={(e) => this.inputHandler(e, "stock", "addProducts")} className="form-control" type="text" placeholder="Stock" /></td>
                 <td><input onChange={(e) => this.inputHandler(e, "description", "addProducts")} className="form-control" type="text" placeholder="Description" /></td>
-                <td><input onChange={(e) => this.inputHandler(e, "image", "addProducts")} className="form-control" type="text" placeholder="Image" /></td>
+                <td><input onChange={(e) => this.fileChangeHandler(e)} className="form-control" type="file" placeholder="Image" /></td>
                 <td>
                     <input onClick={this.addProductsHandler} className="btn btn-primary" type="button" value="Save" />
                 </td>
